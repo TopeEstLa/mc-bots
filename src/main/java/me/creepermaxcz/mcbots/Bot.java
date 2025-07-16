@@ -14,6 +14,9 @@ import org.geysermc.mcprotocollib.protocol.MinecraftConstants;
 import org.geysermc.mcprotocollib.protocol.MinecraftProtocol;
 import org.geysermc.mcprotocollib.protocol.data.UnexpectedEncryptionException;
 import org.geysermc.mcprotocollib.protocol.data.game.ClientCommand;
+import org.geysermc.mcprotocollib.protocol.data.game.ResourcePackStatus;
+import org.geysermc.mcprotocollib.protocol.packet.common.clientbound.ClientboundResourcePackPushPacket;
+import org.geysermc.mcprotocollib.protocol.packet.common.serverbound.ServerboundResourcePackPacket;
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.ClientboundLoginPacket;
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.entity.player.ClientboundPlayerCombatKillPacket;
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.entity.player.ClientboundPlayerPositionPacket;
@@ -106,6 +109,12 @@ public class Bot extends Thread {
                             );
 
                         }
+                    } else if (packet instanceof ClientboundResourcePackPushPacket resourcePackPushPacket) {
+                        ServerboundResourcePackPacket ressourcePackPacket = new ServerboundResourcePackPacket(
+                                resourcePackPushPacket.getId(),
+                                ResourcePackStatus.SUCCESSFULLY_LOADED
+                        );
+                        client.send(ressourcePackPacket);
                     }
                 }
 
